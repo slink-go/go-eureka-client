@@ -13,21 +13,23 @@ import (
 	"net/url"
 	"os"
 	"path"
-	"time"
 	"strings"
+	"time"
 )
 
 const (
 	defaultBufferSize = 10
-	UP = "UP"
-	DOWN = "DOWN"
-	STARTING = "STARTING"
+	UP                = "UP"
+	DOWN              = "DOWN"
+	STARTING          = "STARTING"
 )
 
 type Config struct {
 	CertFile    string        `json:"certFile"`
 	KeyFile     string        `json:"keyFile"`
 	CaCertFile  []string      `json:"caCertFiles"`
+	Login       string        `json:"login"`
+	Password    string        `json:"password"`
 	DialTimeout time.Duration `json:"timeout"`
 	Consistency string        `json:"consistency"`
 }
@@ -50,8 +52,8 @@ type Client struct {
 	// Argument numReqs is the number of http.Requests that have been made so far.
 	// Argument lastResp is the http.Responses from the last request.
 	// Argument err is the reason of the failure.
-	CheckRetry  func(cluster *Cluster, numReqs int,
-	lastResp http.Response, err error) error
+	CheckRetry func(cluster *Cluster, numReqs int,
+		lastResp http.Response, err error) error
 }
 
 // NewClient create a basic client that is configured to be used
@@ -69,6 +71,12 @@ func NewClient(machines []string) *Client {
 
 	client.initHTTPClient()
 	return client
+}
+
+func (c *Client) WithBasicAuth(login, password string) *Client {
+	c.Config.Login = login
+	c.Config.Password = password
+	return c
 }
 
 // NewTLSClient create a basic client with TLS configuration

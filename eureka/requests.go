@@ -300,6 +300,10 @@ func (c *Client) SendRequest(rr *RawRequest) (*RawResponse, error) {
 			return nil, err
 		}
 
+		if c.Config.Login != "" && c.Config.Password != "" {
+			req.SetBasicAuth(c.Config.Login, c.Config.Password)
+		}
+
 		resp, err = c.httpClient.Do(req)
 		defer func() {
 			if resp != nil {
