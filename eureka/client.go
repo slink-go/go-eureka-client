@@ -5,7 +5,7 @@ import (
 	"crypto/x509"
 	"encoding/json"
 	"errors"
-	"github.com/sirupsen/logrus"
+	"github.com/slink-go/logging"
 	"io"
 	"io/ioutil"
 	"net"
@@ -40,6 +40,7 @@ type Client struct {
 	httpClient  *http.Client
 	persistence io.Writer
 	cURLch      chan string
+	logger      logging.Logger
 	// CheckRetry can be used to control the policy for failed requests
 	// and modify the cluster if needed.
 	// The client calls it before sending requests again, and
@@ -67,6 +68,7 @@ func NewClient(machines []string) *Client {
 	client := &Client{
 		Cluster: NewCluster(machines),
 		Config:  config,
+		logger:  logging.GetLogger("eureka-client"),
 	}
 
 	client.initHTTPClient()
@@ -282,7 +284,9 @@ func (c *Client) internalSyncCluster(machines []string) bool {
 			// the first one in the machine list is the leader
 			c.Cluster.switchLeader(0)
 
-			logrus.Debug("sync.machines " + strings.Join(c.Cluster.Machines, ", "))
+			if c.logger.IsDebugEnabled() {
+				c.logger.Debug("sync.machines %v", strings.Join(c.Cluster.Machines, ", "))
+			}
 			return true
 		}
 	}

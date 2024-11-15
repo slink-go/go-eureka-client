@@ -1,7 +1,7 @@
 package eureka
 
 import (
-	"github.com/sirupsen/logrus"
+	"github.com/slink-go/logging"
 	"net/url"
 	"strings"
 )
@@ -9,6 +9,7 @@ import (
 type Cluster struct {
 	Leader   string   `json:"leader"`
 	Machines []string `json:"machines"`
+	logger   logging.Logger
 }
 
 func NewCluster(machines []string) *Cluster {
@@ -21,12 +22,13 @@ func NewCluster(machines []string) *Cluster {
 	return &Cluster{
 		Leader:   machines[0],
 		Machines: machines,
+		logger:   logging.GetLogger("eureka-cluster"),
 	}
 }
 
 // switchLeader switch the current leader to machines[num]
 func (cl *Cluster) switchLeader(num int) {
-	logrus.Debugf("switch.leader[from %v to %v]",
+	cl.logger.Debug("switch.leader[from %v to %v]",
 		cl.Leader, cl.Machines[num])
 
 	cl.Leader = cl.Machines[num]
@@ -37,7 +39,7 @@ func (cl *Cluster) updateFromStr(machines string) {
 }
 
 func (cl *Cluster) updateLeader(leader string) {
-	logrus.Debugf("update.leader[%s,%s]", cl.Leader, leader)
+	cl.logger.Debug("update.leader[%s,%s]", cl.Leader, leader)
 	cl.Leader = leader
 }
 

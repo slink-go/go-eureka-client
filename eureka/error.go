@@ -3,7 +3,7 @@ package eureka
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/sirupsen/logrus"
+	"github.com/slink-go/logging"
 )
 
 const (
@@ -43,7 +43,7 @@ func handleError(b []byte) error {
 
 	err := json.Unmarshal(b, eurekaErr)
 	if err != nil {
-		logrus.Warningf("cannot unmarshal eureka error: %v", err)
+		logging.GetLogger("eureka-error").Warning("cannot unmarshal eureka error: %v", err)
 		return err
 	}
 
