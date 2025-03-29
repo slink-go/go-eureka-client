@@ -1,7 +1,7 @@
 package eureka
 
 import (
-	"github.com/slink-go/logging"
+	"go.slink.ws/logging"
 	"net/url"
 	"strings"
 )

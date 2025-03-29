@@ -5,7 +5,7 @@ import (
 	"crypto/x509"
 	"encoding/json"
 	"errors"
-	"github.com/slink-go/logging"
+	"go.slink.ws/logging"
 	"io"
 	"io/ioutil"
 	"net"

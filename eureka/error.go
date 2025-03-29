@@ -3,7 +3,7 @@ package eureka
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/slink-go/logging"
+	"go.slink.ws/logging"
 )
 
 const (

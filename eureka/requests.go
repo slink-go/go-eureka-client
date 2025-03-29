@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/slink-go/logging"
+	"go.slink.ws/logging"
 	"io"
 	"io/ioutil"
 	"math/rand"

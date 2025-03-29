@@ -1,10 +1,8 @@
-module github.com/slink-go/go-eureka-client
+module go.slink.ws/go-eureka-client
 
-go 1.22.3
+go 1.24.0
 
-toolchain go1.23.1
-
-require github.com/slink-go/logging v0.0.2
+require go.slink.ws/logging v0.0.5
 
 require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
